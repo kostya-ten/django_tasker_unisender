@@ -10,4 +10,4 @@ install:
   #- pip install -U .
   - pip install -r requirements.txt
 
-script: manage.py test
+script: python manage.py test

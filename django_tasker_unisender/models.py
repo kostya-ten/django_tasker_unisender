@@ -21,7 +21,7 @@ def _get_request(method: str = None, data: dict = None) -> object:
 
 class List(models.Model):
     title = models.CharField(max_length=200, verbose_name=_("Title"), unique=True)
-    is_default = models.NullBooleanField(verbose_name=_("Default list"), null=True, unique=True)
+    is_default = models.BooleanField(verbose_name=_("Default list"), unique=True)
 
     def __str__(self):
         return '{title}'.format(title=self.title)

@@ -118,12 +118,20 @@ class Field(models.Model):
 
         super().save(force_insert, force_update, using, update_fields)
 
-# class Subscribe(models.Model):
-#     email = models.EmailField(
-#         max_length=200,
-#         verbose_name=_("Email address")
-#     )
-#
-#     list = models.ManyToManyField(List)
-#
-#     pass
+
+class Subscribe(models.Model):
+    email = models.EmailField(
+        max_length=200,
+        verbose_name=_("Email address"),
+        unique=True,
+    )
+
+    list = models.ManyToManyField(List)
+
+    def __str__(self):
+        return '{email}'.format(email=self.email)
+
+    class Meta:
+        verbose_name = _("Subscribe")
+        verbose_name_plural = _("Subscribes")
+

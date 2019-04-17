@@ -11,5 +11,10 @@ class FieldAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'type', 'public_name')
 
 
+class SubscribeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email')
+
+
 admin.site.register(models.List, ListAdmin)
 admin.site.register(models.Field, FieldAdmin)
+admin.site.register(models.Subscribe, SubscribeAdmin)

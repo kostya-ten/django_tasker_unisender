@@ -10,7 +10,7 @@ class Unisender:
     def __init__(self):
         self.api_key = getattr(settings, 'UNISENDER_API_KEY', os.environ.get('UNISENDER_API_KEY'))
         self.params = {'format': 'json', 'api_key': self.api_key}
-        self.url = "https://api.unisender.com/ru/api/"
+        self.url = "https://api.unisender.com/ru/api"
 
     def create_list(self, title: str = None) -> int:
         params = self.params
@@ -20,8 +20,10 @@ class Unisender:
             url="{url}/createList".format(url=self.url),
             params=params
         )
+
         if response.status_code == 200:
-            return response.json().get("result").get("id")
+            json = response.json()
+            return json.get("result").get("id")
 
 
 class List(models.Model):
@@ -36,13 +38,12 @@ class List(models.Model):
         verbose_name_plural = _("Lists")
 
     def delete(self, using=None, keep_parents=False):
-        print('delete')
+        print('delete', self.unisender_id)
+        super().delete(using, keep_parents)
 
-    def save(self, *args, **kwargs):
-        if not self.pk or kwargs.get('force_insert', False):
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.pk or force_insert:
             unisender = Unisender()
             self.unisender_id = unisender.create_list(self.title)
 
-        super().save(*args, **kwargs)
-
-
+        super().save(force_insert, force_update, using, update_fields)

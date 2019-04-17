@@ -25,10 +25,34 @@ class Unisender:
             json = response.json()
             return json.get("result").get("id")
 
+    def delete_list(self, id: int) -> bool:
+        params = self.params
+        params['list_id'] = id
+        response = requests.get(
+            url="{url}/deleteList".format(url=self.url),
+            params=params,
+        )
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+
+    def update_list(self, id: int, title: str):
+        params = self.params
+        params['list_id'] = id
+        params['title'] = title
+        response = requests.get(
+            url="{url}/updateList".format(url=self.url),
+            params=params,
+        )
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+
 
 class List(models.Model):
-    unisender_id = models.IntegerField(unique=True, null=True, blank=True)
-    title = models.CharField(max_length=200, verbose_name=_("Title"))
+    title = models.CharField(max_length=200, verbose_name=_("Title"), unique=True)
 
     def __str__(self):
         return '{title}'.format(title=self.title)
@@ -38,12 +62,16 @@ class List(models.Model):
         verbose_name_plural = _("Lists")
 
     def delete(self, using=None, keep_parents=False):
-        print('delete', self.unisender_id)
+        unisender = Unisender()
+        unisender.delete_list(unisender_id=self.pk)
         super().delete(using, keep_parents)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        unisender = Unisender()
+
         if not self.pk or force_insert:
-            unisender = Unisender()
-            self.unisender_id = unisender.create_list(self.title)
+            self.pk = unisender.create_list(self.title)
+        else:
+            unisender.update_list(title=self.title, id=self.pk)
 
         super().save(force_insert, force_update, using, update_fields)

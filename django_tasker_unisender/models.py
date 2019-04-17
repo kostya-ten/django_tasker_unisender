@@ -29,7 +29,8 @@ class List(models.Model):
 
         super().save(force_insert, force_update, using, update_fields)
 
-    def _get_request(self, method: str = None, data: dict = None) -> object:
+    @staticmethod
+    def _get_request(method: str = None, data: dict = None) -> object:
         url = "{url}/{method}".format(url="https://api.unisender.com/ru/api", method=method)
         api_key = getattr(settings, 'UNISENDER_API_KEY', os.environ.get('UNISENDER_API_KEY'))
         data = {**data, **{'format': 'json', 'api_key': api_key}}

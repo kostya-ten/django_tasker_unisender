@@ -37,7 +37,7 @@ class Unisender:
         else:
             return False
 
-    def update_list(self, list_id: int, title: str):
+    def update_list(self, list_id: int, title: str) -> bool:
         params = self.params
         params['list_id'] = list_id
         params['title'] = title

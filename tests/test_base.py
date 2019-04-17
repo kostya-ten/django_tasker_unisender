@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 
-class TestBase(TestCase):
+class BaseTest(TestCase):
 
     def test_base(self):
-        self.assertTrue(True,True)
+        self.assertEqual(True, True)

@@ -4,15 +4,17 @@ from . import models
 
 class ListAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'is_default')
-    #readonly_fields = ('unisender_id',)
+    actions = None
 
 
 class FieldAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'type', 'public_name')
+    actions = None
 
 
 class SubscribeAdmin(admin.ModelAdmin):
     list_display = ('id', 'email')
+    actions = None
 
 
 admin.site.register(models.List, ListAdmin)

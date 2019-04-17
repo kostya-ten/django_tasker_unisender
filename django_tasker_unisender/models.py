@@ -25,9 +25,9 @@ class Unisender:
             json = response.json()
             return json.get("result").get("id")
 
-    def delete_list(self, id: int) -> bool:
+    def delete_list(self, list_id: int) -> bool:
         params = self.params
-        params['list_id'] = id
+        params['list_id'] = list_id
         response = requests.get(
             url="{url}/deleteList".format(url=self.url),
             params=params,
@@ -37,9 +37,9 @@ class Unisender:
         else:
             return False
 
-    def update_list(self, id: int, title: str):
+    def update_list(self, list_id: int, title: str):
         params = self.params
-        params['list_id'] = id
+        params['list_id'] = list_id
         params['title'] = title
         response = requests.get(
             url="{url}/updateList".format(url=self.url),
@@ -63,7 +63,7 @@ class List(models.Model):
 
     def delete(self, using=None, keep_parents=False):
         unisender = Unisender()
-        unisender.delete_list(unisender_id=self.pk)
+        unisender.delete_list(list_id=self.pk)
         super().delete(using, keep_parents)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
@@ -72,6 +72,6 @@ class List(models.Model):
         if not self.pk or force_insert:
             self.pk = unisender.create_list(self.title)
         else:
-            unisender.update_list(title=self.title, id=self.pk)
+            unisender.update_list(title=self.title, list_id=self.pk)
 
         super().save(force_insert, force_update, using, update_fields)

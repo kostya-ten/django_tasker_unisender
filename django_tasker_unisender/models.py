@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 
 import requests
 from django.conf import settings
@@ -20,6 +21,9 @@ def _get_request(method: str = None, data: dict = None) -> object:
 
 
 class List(models.Model):
+    """
+        Contact list model
+    """
     title = models.CharField(max_length=200, verbose_name=_("Title"), unique=True)
     is_default = models.BooleanField(verbose_name=_("Default list"), unique=True)
 
@@ -45,6 +49,9 @@ class List(models.Model):
 
 
 class Field(models.Model):
+    """
+        Custom field model
+    """
     TYPE = (
         (1, 'string'),
         (2, 'text'),
@@ -127,6 +134,7 @@ class Subscribe(models.Model):
     )
 
     list = models.ManyToManyField(List)
+    #list_ids=17439493&double_optin=3&overwrite=1&fields[email]=test@example.org&fields[Names]=UserName
 
     def __str__(self):
         return '{email}'.format(email=self.email)
@@ -135,3 +143,48 @@ class Subscribe(models.Model):
         verbose_name = _("Subscribe")
         verbose_name_plural = _("Subscribes")
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.pk or force_insert:
+            super().save(force_insert, force_update, using, update_fields)
+            print(self.email)
+
+            #for tag in self.list:
+            #    print(tag.id)
+
+
+
+            #self.
+            #print(self.list.)
+
+            #for list in :
+            #    print(list)
+
+            #list_default = List.objects.filter(is_default=1)
+            #if list_default.count():
+            #    print('sss')
+                # print(list_default.last().)
+
+            #print(self.list.all())
+            #result = _get_request(
+            #   method='subscribe',
+            #   data={
+            #       'list_ids': self.list,
+            #       'double_optin': 3,
+            #       'overwrite': 1,
+            #       'fields[email]': self.email,
+            #   }
+            #)
+            #self.pk = result.get('result').get('id')
+
+        # else:
+        #     _get_request(
+        #        method='updateField',
+        #        data={
+        #            'id': self.pk,
+        #            'name': self.name,
+        #            'public_name': self.public_name,
+        #        }
+        #     )
+        #     delattr(self, 'type')
+
+        super().save(force_insert, force_update, using, update_fields)

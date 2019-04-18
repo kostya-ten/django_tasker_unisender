@@ -131,31 +131,38 @@ class Subscribe(models.Model):
         unique_together = ("email", "list")
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-
-        export = _get_request(
-            method='exportContacts',
-            data={
-                'email': self.email,
-            }
-        )
-
-        for field in export.get('field_names'):
-            print(field)
-            #export.get('data')
-
-
-        person = _get_request(
-            method='subscribe',
-            data={
-                'list_ids': self.list.pk,
-                'fields[email]': self.email,
-                'double_optin': 3,
-                'overwrite': 1,
-            }
-        )
-        self.pk = person.get('person_id')
+        if not self.pk or force_insert:
+            self.pk = unisender.subscribe(list_ids=self.list.id, fields={'fields[email]': self.email})
+            super().save(force_insert, force_update, using, update_fields)
+        else:
+            self.pk = unisender.subscribe(list_ids=self.list.id, fields={'fields[email]': self.email})
+            super().save(force_insert, force_update, using, update_fields)
 
         super().save(force_insert, force_update, using, update_fields)
+
+        # export = _get_request(
+        #     method='exportContacts',
+        #     data={
+        #         'email': self.email,
+        #     }
+        # )
+        #
+        # for field in export.get('field_names'):
+        #     print(field)
+        #     #export.get('data')
+        #
+        #
+        # person = _get_request(
+        #     method='subscribe',
+        #     data={
+        #         'list_ids': self.list.pk,
+        #         'fields[email]': self.email,
+        #         'double_optin': 3,
+        #         'overwrite': 1,
+        #     }
+        # )
+        # self.pk = person.get('person_id')
+
 
     #def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         #if not self.pk or force_insert:

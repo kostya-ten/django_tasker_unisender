@@ -20,6 +20,7 @@ def _get_request(method: str = None, data: dict = None) -> object:
         raise requests.HTTPError("Unisender error: {error}".format(error=json.get('error')))
     return json.get('result')
 
+
 # Lists
 def create_list(title: str = None) -> int:
     """
@@ -70,3 +71,12 @@ def update_field(id: int = None, name: str = None, public_name: str = None) -> N
 def delete_field(id: int = None) -> None:
     _get_request(method='deleteField', data={'id': int})
     return
+
+
+def subscribe(list_ids: int = None, fields: dict = {}, double_optin: int = 3, overwrite: int = 1) -> int:
+    data = {'list_ids': list_ids, 'double_optin': double_optin, 'overwrite': overwrite}
+    for key, value in fields.items():
+        data[key] = value
+
+    result = _get_request(method='subscribe', data=data)
+    return result.get('person_id')

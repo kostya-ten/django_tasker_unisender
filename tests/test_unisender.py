@@ -20,3 +20,10 @@ class BaseTest(TestCase):
 
         unisender.delete_list(list_id=list_id)
 
+    # def test_subscribe(self):
+    #     #list_id = unisender.create_list('test_py')
+    #
+    #     unisender.subscribe(
+    #         list_id=1,
+    #         fields={'fields[email]': 'kostya@yandex.ru'},
+    #     )

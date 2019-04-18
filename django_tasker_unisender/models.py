@@ -5,6 +5,8 @@ import requests
 from django.conf import settings
 from django.core import validators
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
 
@@ -16,7 +18,7 @@ def _get_request(method: str = None, data: dict = None) -> object:
 
     json = response.json()
     if json.get('error'):
-        raise requests.HTTPError(json.get('error'))
+        raise requests.HTTPError("Unisender error: {error}".format(error=json.get('error')))
     return json
 
 
@@ -145,8 +147,58 @@ class Subscribe(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.pk or force_insert:
+
+            # result_list = _get_request(method='createList', data={'title': 'tmp'})
+            # list_id = result_list.get("result").get("id")
+            #
+            # person = _get_request(
+            #     method='subscribe',
+            #     data={
+            #         'list_ids': list_id,
+            #         'double_optin': 3,
+            #         'overwrite': 1,
+            #         'fields[email]': self.email,
+            #     }
+            # )
+            #
+            # self.pk = person.get('result').get('person_id')
+            #
+            # # Delete list
+            # _get_request(method='deleteList', data={'list_id': list_id})
+
             super().save(force_insert, force_update, using, update_fields)
-            print(self.email)
+
+
+        # for list in self.list.all():
+        #     # result = _get_request(
+        #     #   method='subscribe',
+        #     #   data={
+        #     #       'list_ids': list.id,
+        #     #       'double_optin': 3,
+        #     #       'overwrite': 1,
+        #     #       'fields[email]': self.email,
+        #     #   }
+        #     # )
+        #     # #result.get('')
+        #     print(list)
+
+
+
+        #ff = self.list
+        #print(ff.all())
+
+        #self.email = "kostya@bk.ru"
+        #self.pk = 3
+
+        super().save(force_insert, force_update, using, update_fields)
+
+
+
+        #if not self.pk or force_insert:
+        #    print(self.list)
+
+            #self.list
+            #print(self.list.obj)
 
             #for tag in self.list:
             #    print(tag.id)
@@ -187,4 +239,22 @@ class Subscribe(models.Model):
         #     )
         #     delattr(self, 'type')
 
-        super().save(force_insert, force_update, using, update_fields)
+
+# Signals
+@receiver(pre_save, sender=List)
+def modelList(instance=None, **kwargs):
+    pass
+
+    #if not instance.pk:
+    #    result = _get_request(method='createList', data={'title': instance.title})
+    #    instance.pk = result.get("result").get("id")
+    #    instance.save()
+    #else:
+    #    print('update')
+
+    #print(instance.title)
+    #print(instance.pk)
+    #print(instance.is_default)
+
+    #raise requests.HTTPError("Test error")
+

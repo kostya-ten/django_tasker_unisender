@@ -1,4 +1,4 @@
-Django>=2.2
+Django
 Pillow>=6.0.0
 email-validator>=1.0.3
 requests>=2.21.0

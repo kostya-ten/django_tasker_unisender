@@ -20,3 +20,5 @@ from . import models
 # admin.site.register(models.List, ListAdmin)
 # admin.site.register(models.Field, FieldAdmin)
 # admin.site.register(models.Subscribe, SubscribeAdmin)
+admin.site.register(models.Subscribe)
+admin.site.register(models.SubscribeTest)

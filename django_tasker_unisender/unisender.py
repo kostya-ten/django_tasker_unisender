@@ -1,11 +1,31 @@
+import os
+
 import requests
+from django.conf import settings
+from django.db import models
+
+
+class UnisenderModel(models.Model):
+    email = models.EmailField(max_length=255, null=True)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        unisender = Unisender()
+        self.pk = unisender.subscribe(
+            list_ids=self.UnisenderMeta.list_id,
+            fields={'fields[email]': 'kostya@yandex.ru'},
+        )
+
+        super().save(force_insert, force_update, using, update_fields)
 
 
 class Unisender:
     """Base class to work with in Unisender"""
 
-    def __init__(self, api_key: str):
-        self.api_key = api_key
+    def __init__(self, api_key: str = None):
+        if not api_key:
+            self.api_key = getattr(settings, 'UNISENDER_API_KEY', os.environ.get('UNISENDER_API_KEY'))
+        else:
+            self.api_key = api_key
 
     def get_request(self, method: str = None, data: dict = None) -> object:
         url = "{url}/{method}".format(url="https://api.unisender.com/ru/api", method=method)

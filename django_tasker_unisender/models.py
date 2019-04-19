@@ -3,18 +3,31 @@ import os
 import requests
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core import validators
 from django.db import models
+from django.core import validators
+#from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from . import unisender
 
 
+class Subscribe(unisender.UnisenderModel):
+
+    class UnisenderMeta:
+        list_id = 9147867
+
+
+class SubscribeTest(unisender.UnisenderModel):
+
+    class UnisenderMeta:
+        list_id = 17460185
+
+
 # Signals
-@receiver(pre_save, sender=User)
-def modelList(instance=None, **kwargs):
-    pass
+# @receiver(pre_save, sender=User)
+# def modelList(instance=None, **kwargs):
+#     pass
 
 
 # def _get_request(method: str = None, data: dict = None) -> object:

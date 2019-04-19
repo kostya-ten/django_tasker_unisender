@@ -7,9 +7,7 @@ from django.conf import settings
 
 class BaseTest(TestCase):
     def setUp(self) -> None:
-        self.unisender = unisender.Unisender(
-            api_key=getattr(settings, 'UNISENDER_API_KEY', os.environ.get('UNISENDER_API_KEY'))
-        )
+        self.unisender = unisender.Unisender()
 
     def test_list(self):
 

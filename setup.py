@@ -51,6 +51,13 @@ setup(
         'Source': 'https://github.com/kostya-ten/django_tasker_unisender/',
         'Tracker': 'https://github.com/kostya-ten/django_tasker_unisender/issues',
     },
-    python_requires='>=3'
+    python_requires='>=3',
+    install_requires=[
+        'Django >= 2.0',
+        'Pillow >= 6.0.0',
+        'email-validator >= 1.0.3',
+        'requests >= 2.21.0',
+        'docutils >= 0.14',
+    ]
 
 )

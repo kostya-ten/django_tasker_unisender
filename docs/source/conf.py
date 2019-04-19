@@ -20,7 +20,6 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 django.setup()
 
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'Django Tasker Unisender'

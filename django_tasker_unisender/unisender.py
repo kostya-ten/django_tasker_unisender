@@ -4,7 +4,7 @@ import requests
 from django.conf import settings
 
 
-def _get_request(method: str = None, data: dict = None) -> object:
+def get_request(method: str = None, data: dict = None) -> object:
     url = "{url}/{method}".format(url="https://api.unisender.com/ru/api", method=method)
     api_key = getattr(settings, 'UNISENDER_API_KEY', os.environ.get('UNISENDER_API_KEY'))
 
@@ -29,7 +29,7 @@ def create_list(title: str = None) -> int:
     :param title: List name. It must be unique in your account.
     :returns: Identifier campaign list
     """
-    result = _get_request(method='createList', data={'title': title})
+    result = get_request(method='createList', data={'title': title})
     return result.get('id')
 
 
@@ -39,7 +39,7 @@ def get_lists() -> list:
 
     :returns: Array, each array element is an object dict with the following id and title fields.
     """
-    return _get_request(method='getLists')
+    return get_request(method='getLists')
 
 
 def delete_list(list_id: int = None) -> None:
@@ -48,35 +48,31 @@ def delete_list(list_id: int = None) -> None:
 
      :param list_id: Identifier campaign list
      """
-    _get_request(method='deleteList', data={'list_id': list_id})
-    return
+    get_request(method='deleteList', data={'list_id': list_id})
 
 
 def update_list(list_id: int = None, title: str = None) -> None:
-    _get_request(method='updateList', data={'list_id': list_id, 'title': title})
-    return
+    get_request(method='updateList', data={'list_id': list_id, 'title': title})
 
 
 # Fields
-def create_field(name: str = None, type: str = None, public_name: str = None) -> int:
-    result = _get_request(method='createField', data={'name': name, 'type': type, 'public_name': public_name})
-    return result.get('id')
+def create_field(name: str = None, field_type: str = None, public_name: str = None) -> int:
+    result = get_request(method='createField', data={'name': name, 'type': field_type, 'public_name': public_name})
+    return int(result.get('id'))
 
 
-def update_field(id: int = None, name: str = None, public_name: str = None) -> None:
-    _get_request(method='updateField', data={'id': id, 'name': name, 'public_name': public_name})
-    return
+def update_field(field_id: int = None, name: str = None, public_name: str = None) -> None:
+    get_request(method='updateField', data={'id': field_id, 'name': name, 'public_name': public_name})
 
 
-def delete_field(id: int = None) -> None:
-    _get_request(method='deleteField', data={'id': int})
-    return
+def delete_field(field_id: int = None) -> None:
+    get_request(method='deleteField', data={'id': field_id})
 
 
-def subscribe(list_ids: int = None, fields: dict = {}, double_optin: int = 3, overwrite: int = 1) -> int:
+def subscribe(list_ids: int = None, fields: dict = None, double_optin: int = 3, overwrite: int = 1) -> int:
     data = {'list_ids': list_ids, 'double_optin': double_optin, 'overwrite': overwrite}
     for key, value in fields.items():
         data[key] = value
 
-    result = _get_request(method='subscribe', data=data)
-    return result.get('person_id')
+    result = get_request(method='subscribe', data=data)
+    return int(result.get('person_id'))

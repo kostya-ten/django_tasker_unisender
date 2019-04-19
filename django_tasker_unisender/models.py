@@ -10,7 +10,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from . import unisender
-
+from django_tasker_unisender.unisender import Unisender
 
 class Subscribe(unisender.EmailModel):
 

@@ -1,10 +1,16 @@
-.. Django Tasker Unisender documentation master file, created by
-   sphinx-quickstart on Fri Apr 19 23:00:12 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to Django Tasker Unisender's documentation!
 ===================================================
+
+.. image:: https://travis-ci.org/kostya-ten/django_tasker_unisender.svg?branch=master
+    :target: https://travis-ci.org/kostya-ten/django_tasker_unisender
+
+.. image:: https://readthedocs.org/projects/django-tasker-unisender/badge/?version=latest
+    :target: https://django-tasker-unisender.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. image:: https://api.codacy.com/project/badge/Grade/9fe057e68937477aab1aebd907aa0913
+    :target: https://www.codacy.com/app/kostya/django_tasker_unisender?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kostya-ten/django_tasker_unisender&amp;utm_campaign=Badge_Grade
+
 
 .. toctree::
    :maxdepth: 2
@@ -17,5 +23,4 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

@@ -12,16 +12,16 @@ from django.utils.translation import gettext_lazy as _
 from . import unisender
 
 
-class Subscribe(unisender.UnisenderModel):
+class Subscribe(unisender.EmailModel):
 
     class UnisenderMeta:
         list_id = 9147867
 
 
-class SubscribeTest(unisender.UnisenderModel):
+class SubscribeTest(unisender.EmailModel):
 
     class UnisenderMeta:
-        list_id = 17460185
+        list_id = 17462165
 
 
 # Signals

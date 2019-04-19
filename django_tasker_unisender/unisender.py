@@ -5,21 +5,27 @@ from django.conf import settings
 from django.db import models
 
 
-class UnisenderModel(models.Model):
+class EmailModel(models.Model):
     email = models.EmailField(max_length=255, null=True)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        unisender = Unisender()
-        self.pk = unisender.subscribe(
-            list_ids=self.UnisenderMeta.list_id,
-            fields={'fields[email]': 'kostya@yandex.ru'},
-        )
-
+        if not self.pk or force_insert:
+            unisender = Unisender()
+            self.pk = unisender.subscribe(
+                list_ids=self.UnisenderMeta.list_id,
+                fields={'fields[email]': 'kostya@yandex.ru'},
+            )
         super().save(force_insert, force_update, using, update_fields)
+
+    def delete(self, using=None, keep_parents=False):
+        unisender = Unisender()
+        unisender.exclude(contact_type="email", contact=self.email, list_ids=[self.UnisenderMeta.list_id])
+        super().delete(using, keep_parents)
 
 
 class Unisender:
-    """Base class to work with in Unisender"""
+    """Base class to work with low-level API Unisender
+    """
 
     def __init__(self, api_key: str = None):
         if not api_key:
@@ -107,6 +113,7 @@ class Unisender:
 
     def update_field(self, field_id: int, name: str, public_name: str = None) -> None:
         """It is a method to change user field parameters.
+
         :parameter field_id: Identifier field_id
         :parameter name: Field name. It must be unique and case insensitive.
                          Also, it is not recommended to create a field with the same name as the standard field names
@@ -122,6 +129,7 @@ class Unisender:
 
     def delete_field(self, field_id: int) -> None:
         """It is a method to delete a user field.
+
            :parameter field_id: Identifier field_id
         """
         self.get_request(method='deleteField', data={'id': field_id})
@@ -145,3 +153,23 @@ class Unisender:
 
         result = self.get_request(method='subscribe', data=data)
         return int(result.get('person_id'))
+
+    def exclude(self, contact_type: str, contact: str, list_ids: list = None) -> None:
+        """The method excludes the contact’s email or phone number from one or several lists.
+
+           :parameter contact_type: The type of the contact to be excluded is either ’email’ or ‘phone’
+           :parameter contact: Email or phone being excluded
+           :parameter list_ids: List codes separated by comma from which contacts are being excluded.
+                                If it is not specified, contacts will be excluded from all lists.
+        """
+        if list_ids:
+            list_ids = ",".join(map(str, list_ids))
+
+        self.get_request(
+            method='exclude',
+            data={
+                'contact_type': contact_type,
+                'contact': contact,
+                'list_ids': list_ids,
+            }
+        )

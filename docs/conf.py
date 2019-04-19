@@ -10,14 +10,20 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+import django
+
+sys.path.insert(0, os.path.abspath('../'))
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
+django.setup()
+
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'Django Tasker UniSender'
+project = 'Django Tasker Unisender'
 copyright = '2019, Kostya Ten'
 author = 'Kostya Ten'
 
@@ -32,17 +38,16 @@ release = '0.1'
 # ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.coverage']
 
-source_suffix = '.rst'
-master_doc = 'index'
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+source_suffix = '.rst'
+master_doc = 'index'
 
 # -- Options for HTML output -------------------------------------------------
 

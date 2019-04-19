@@ -12,12 +12,17 @@
 #
 import os
 import sys
+#import django
+#sys.path.insert(0, os.path.abspath('../../'))
+
+sys.path.append(os.path.abspath('../../'))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tests.settings')
+
 import django
-
-sys.path.insert(0, os.path.abspath('../../'))
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 django.setup()
+
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
+#django.setup()
 
 
 # -- Project information -----------------------------------------------------

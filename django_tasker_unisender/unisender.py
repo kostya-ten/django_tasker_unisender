@@ -1,78 +1,127 @@
-import os
-
 import requests
-from django.conf import settings
 
 
-def get_request(method: str = None, data: dict = None) -> object:
-    url = "{url}/{method}".format(url="https://api.unisender.com/ru/api", method=method)
-    api_key = getattr(settings, 'UNISENDER_API_KEY', os.environ.get('UNISENDER_API_KEY'))
+class Unisender:
+    """Base class to work with in Unisender"""
 
-    if data:
-        data = {**data, **{'format': 'json', 'api_key': api_key, 'platform': 'Django module django_tasker_unisender'}}
-    else:
-        data = {'format': 'json', 'api_key': api_key, 'platform': 'Django module django_tasker_unisender'}
+    def __init__(self, api_key: str):
+        self.api_key = api_key
 
-    response = requests.request(method='POST', url=url, data=data)
+    def get_request(self, method: str = None, data: dict = None) -> object:
+        url = "{url}/{method}".format(url="https://api.unisender.com/ru/api", method=method)
 
-    json = response.json()
-    if json.get('error'):
-        raise requests.HTTPError("Unisender error: {error}".format(error=json.get('error')))
-    return json.get('result')
+        if data:
+            data = {
+                **data,
+                **{
+                    'format': 'json',
+                    'api_key': self.api_key,
+                    'platform': 'Django module django_tasker_unisender'
+                }
+            }
+        else:
+            data = {'format': 'json', 'api_key': self.api_key, 'platform': 'Django module django_tasker_unisender'}
 
+        response = requests.request(method='POST', url=url, data=data)
 
-# Lists
-def create_list(title: str = None) -> int:
-    """
-    Checks the validity of a mobile phone number.
+        json = response.json()
+        if json.get('error'):
+            raise requests.HTTPError("Unisender error: {error}".format(error=json.get('error')))
+        return json.get('result')
 
-    :param title: List name. It must be unique in your account.
-    :returns: Identifier campaign list
-    """
-    result = get_request(method='createList', data={'title': title})
-    return result.get('id')
+    # Lists
+    def create_list(self, title: str) -> int:
+        """
+        Checks the validity of a mobile phone number.
 
+        :param title: List name. It must be unique in your account.
+        :returns: Identifier campaign list
+        """
+        result = self.get_request(method='createList', data={'title': title})
+        return result.get('id')
 
-def get_lists() -> list:
-    """
-    It is a method to get the list of all available campaign lists.
+    def get_lists(self) -> list:
+        """It is a method to get the list of all available campaign lists.
 
-    :returns: Array, each array element is an object dict with the following id and title fields.
-    """
-    return get_request(method='getLists')
+        :returns: Array, each array element is an object dict with the following id and title fields.
+        """
+        return self.get_request(method='getLists')
 
+    def delete_list(self, list_id: int) -> None:
+        """It is a method to delete a list.
 
-def delete_list(list_id: int = None) -> None:
-    """
-     It is a method to delete a list.
+         :param list_id: Identifier campaign list
+         """
+        self.get_request(method='deleteList', data={'list_id': list_id})
 
-     :param list_id: Identifier campaign list
-     """
-    get_request(method='deleteList', data={'list_id': list_id})
+    def update_list(self, list_id: int, title: str) -> None:
+        """It is a method to change campaign list properties.
 
+        :param list_id: Identifier campaign list.
+        :param title: List name. It must be unique in your account.
+        """
+        self.get_request(method='updateList', data={'list_id': list_id, 'title': title})
 
-def update_list(list_id: int = None, title: str = None) -> None:
-    get_request(method='updateList', data={'list_id': list_id, 'title': title})
+    # Fields
+    def create_field(self, name: str, field_type: str, public_name: str = None) -> int:
+        """It is a method to create a new user field, the value of which can be set for each recipient,
+        and then it can be substituted in the letter.
 
+        :parameter name: Variable to be substituted. It must be unique and case sensitive.
+                    Also, it is not recommended to create a field with the same name as the standard field names
+                    (tags, email, phone, email_status, phone_status, etc.) as the importContacts.
+                    Admissible characters: Latin letters, numbers, «_» and «-».
+                    The first character must be a letter. No spaces are allowed.
+        :parameter field_type: Field type Possible options:
+                            (string — string, text — one or more strings, number — integer or number with decimal point
+                            date — date (the DD.MM.YYYY, DD-MM-YYYY, YYYY.MM.DD, YYYY-MM-DD format is supported)
+                            bool — 1/0, yes/no
+                            )
+        :parameter public_name: Field name.
+                                If it is not used, an automatical generation by the «name» field will take place.
 
-# Fields
-def create_field(name: str = None, field_type: str = None, public_name: str = None) -> int:
-    result = get_request(method='createField', data={'name': name, 'type': field_type, 'public_name': public_name})
-    return int(result.get('id'))
+        :return: Identifier field_id
+        """
+        result = self.get_request(method='createField', data={'name': name, 'type': field_type, 'public_name': public_name})
+        return int(result.get('id'))
 
+    def update_field(self, field_id: int, name: str, public_name: str = None) -> None:
+        """It is a method to change user field parameters.
+        :parameter field_id: Identifier field_id
+        :parameter name: Field name. It must be unique and case insensitive.
+                         Also, it is not recommended to create a field with the same name as the standard field names
+                         (tags, email, phone, email_status, phone_status, etc.)
+                         as the importContacts method will work incorrectly.
+        :parameter public_name: Field name. Name of the «variable for substitution».
+                                field in the personal account.
+                                If it is not used, an automatically generation by the «name» field will take place.
+                                Admissible characters: Latin letters, numbers, «_» and «-».
+                                The first character must be a letter. No spaces are allowed.
+        """
+        self.get_request(method='updateField', data={'id': field_id, 'name': name, 'public_name': public_name})
 
-def update_field(field_id: int = None, name: str = None, public_name: str = None) -> None:
-    get_request(method='updateField', data={'id': field_id, 'name': name, 'public_name': public_name})
+    def delete_field(self, field_id: int) -> None:
+        """It is a method to delete a user field.
+           :parameter field_id: Identifier field_id
+        """
+        self.get_request(method='deleteField', data={'id': field_id})
 
+    def subscribe(self, list_ids: int, fields: dict, double_optin: int = 3, overwrite: int = 0) -> int:
+        """This method adds contacts (email address and/or mobile phone numbers) of the contact to one or several lists,
+            and also allows you to add/change values of additional fields and tags.
 
-def delete_field(field_id: int = None) -> None:
-    get_request(method='deleteField', data={'id': field_id})
+            :parameter list_ids: List codes separated by comma in which a contact is to be added.
+            :parameter fields: Dictionaries of additional fields.
+            :parameter double_optin: It obtains the value of 0, 3, or 4. (3 by default)
+                                    (see https://www.unisender.com/en/support/api/partners/subscribe/)
+            :parameter overwrite: Field and tag rewriting mode, the number from 0 to 2 (0 by default).
+                                  It sets what needs to be done in case of existence of a contact
+                                  (the contact is identified by the email address and/or phone number).
+            :return: Identifier person
+        """
+        data = {'list_ids': list_ids, 'double_optin': double_optin, 'overwrite': overwrite}
+        for key, value in fields.items():
+            data[key] = value
 
-
-def subscribe(list_ids: int = None, fields: dict = None, double_optin: int = 3, overwrite: int = 1) -> int:
-    data = {'list_ids': list_ids, 'double_optin': double_optin, 'overwrite': overwrite}
-    for key, value in fields.items():
-        data[key] = value
-
-    result = get_request(method='subscribe', data=data)
-    return int(result.get('person_id'))
+        result = self.get_request(method='subscribe', data=data)
+        return int(result.get('person_id'))

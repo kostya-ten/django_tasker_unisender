@@ -116,10 +116,9 @@ class Subscribe(models.Model):
         max_length=200,
         verbose_name=_("Email address"),
     )
+    list = models.ManyToManyField(List)
 
-    list = models.ForeignKey(List, on_delete=models.CASCADE)
-
-    #list = models.ManyToManyField(List)
+    #list = models.ForeignKey(List, on_delete=models.CASCADE)
     #list_ids=17439493&double_optin=3&overwrite=1&fields[email]=test@example.org&fields[Names]=UserName
 
     def __str__(self):
@@ -128,17 +127,23 @@ class Subscribe(models.Model):
     class Meta:
         verbose_name = _("Subscribe")
         verbose_name_plural = _("Subscribes")
-        unique_together = ("email", "list")
+        #unique_together = ("email", "list")
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if not self.pk or force_insert:
-            self.pk = unisender.subscribe(list_ids=self.list.id, fields={'fields[email]': self.email})
-            super().save(force_insert, force_update, using, update_fields)
-        else:
-            self.pk = unisender.subscribe(list_ids=self.list.id, fields={'fields[email]': self.email})
-            super().save(force_insert, force_update, using, update_fields)
+            print(self.pk)
 
-        super().save(force_insert, force_update, using, update_fields)
+            pass
+
+        #return self
+
+        #    self.pk = unisender.subscribe(list_ids=self.list.id, fields={'fields[email]': self.email})
+        #    super().save(force_insert, force_update, using, update_fields)
+        #else:
+        #    self.pk = unisender.subscribe(list_ids=self.list.id, fields={'fields[email]': self.email})
+        #    super().save(force_insert, force_update, using, update_fields)
+
+        # super().save(force_insert, force_update, using, update_fields)
 
         # export = _get_request(
         #     method='exportContacts',

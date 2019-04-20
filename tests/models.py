@@ -8,6 +8,7 @@ class Subscribe(EmailModel):
 
     class UnisenderMeta:
         list_id = 9147867
+        fields = {'firstname': 'Firstname', 'lastname': 'Lastname'}
 
 
 class SubscribeTest(EmailModel):

@@ -115,6 +115,12 @@ class Unisender:
         """
         self.get_request(method='deleteField', data={'id': field_id})
 
+    def get_fields(self):
+        """Array, each array element is an object with the id, name, type, is_visible and view_pos fields.
+
+        """
+        return self.get_request(method='getFields')
+
     def subscribe(self, list_ids: int, fields: dict, double_optin: int = 3, overwrite: int = 0) -> int:
         """This method adds contacts (email address and/or mobile phone numbers) of the contact to one or several lists,
             and also allows you to add/change values of additional fields and tags.

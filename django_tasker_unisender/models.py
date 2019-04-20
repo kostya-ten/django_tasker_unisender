@@ -6,12 +6,24 @@ class EmailModel(models.Model):
     email = models.EmailField(max_length=255, null=True)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        unisender = Unisender()
+
         if not self.pk or force_insert:
-            unisender = Unisender()
             self.pk = unisender.subscribe(
                 list_ids=self.UnisenderMeta.list_id,
                 fields={'fields[email]': self.email},
             )
+
+        if getattr(self, 'UnisenderMeta') and getattr(self.UnisenderMeta, 'fields'):
+            fields = dict(self.UnisenderMeta.fields)
+            for key, val in fields.items():
+
+                fields = unisender.get_fields()
+                print(fields)
+
+                #field = unisender.create_field(name=key, public_name=val)
+                print(key, val)
+
         super().save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None, keep_parents=False):

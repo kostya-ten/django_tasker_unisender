@@ -5,7 +5,7 @@ Usage::
 
     from django_tasker_unisender.unisender import Unisender
 
-    unisender = Unisender()
+    unisender = Unisender(api_key="<< api key >>")
     lists = unisender.get_lists()
     print(lists)
 

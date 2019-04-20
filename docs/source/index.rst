@@ -24,7 +24,7 @@ Requirements
 Installation
 """"""""""""""""""
 
-You can get Django Tasker Account by using pip::
+You can get Django Tasker Unisender by using pip::
 
     $ pip install django-tasker-unisender
 

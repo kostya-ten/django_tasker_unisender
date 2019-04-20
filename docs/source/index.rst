@@ -67,7 +67,7 @@ Add to your ``admin.py``
     class SubscribeAdmin(admin.ModelAdmin):
         list_display = ('email',)
 
-    admin.site.register(models.Subscribe)
+    admin.site.register(models.Subscribe, SubscribeAdmin)
 
 
 .. toctree::

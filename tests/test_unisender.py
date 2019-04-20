@@ -1,4 +1,5 @@
 import os
+from os import urandom
 
 from django.test import TestCase
 from django_tasker_unisender import unisender
@@ -10,13 +11,14 @@ class BaseTest(TestCase):
         self.unisender = unisender.Unisender()
 
     def test_list(self):
+        random = urandom(2).hex()
 
-        list_id = self.unisender.create_list(title="test_py")
+        list_id = self.unisender.create_list(title="test_py_{random}".format(random=random))
         self.assertRegex(str(list_id), '^[0-9]+$')
 
         test_data = None
         for item in self.unisender.get_lists():
-            if item.get('title') == 'test_py':
+            if item.get('title') == "test_py_{random}".format(random=random):
                 test_data = item
 
         if not test_data:

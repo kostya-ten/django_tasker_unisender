@@ -45,6 +45,8 @@ Add to your ``settings.py``
 
     UNISENDER_API_KEY="<< YOU API KEY>>"
 
+You can get the api key at this `link <https://www.unisender.com/?a=ndix/>`_
+
 Add to your ``models.py``
 
 .. code-block:: python

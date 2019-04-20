@@ -1,27 +1,24 @@
-import os
-
-import requests
-from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
-from django.core import validators
-#from django.db import models
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
-from django.utils.translation import gettext_lazy as _
-from . import unisender
-from django_tasker_unisender.unisender import Unisender
-
-class Subscribe(unisender.EmailModel):
-
-    class UnisenderMeta:
-        list_id = 9147867
+from .unisender import Unisender
 
 
-class SubscribeTest(unisender.EmailModel):
+class EmailModel(models.Model):
+    email = models.EmailField(max_length=255, null=True)
 
-    class UnisenderMeta:
-        list_id = 17462165
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not self.pk or force_insert:
+            unisender = Unisender()
+            self.pk = unisender.subscribe(
+                list_ids=self.UnisenderMeta.list_id,
+                fields={'fields[email]': self.email},
+            )
+        super().save(force_insert, force_update, using, update_fields)
+
+    def delete(self, using=None, keep_parents=False):
+        unisender = Unisender()
+        unisender.exclude(contact_type="email", contact=self.email, list_ids=[self.UnisenderMeta.list_id])
+        super().delete(using, keep_parents)
+
 
 
 # Signals

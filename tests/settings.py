@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
     'django_tasker_unisender',
+    'tests'
 ]
 
 MIDDLEWARE = [

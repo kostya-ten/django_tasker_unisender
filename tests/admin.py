@@ -1,5 +1,5 @@
-#from django.contrib import admin
-#from . import models
+from django.contrib import admin
+from . import models
 
 
 # class ListAdmin(admin.ModelAdmin):
@@ -20,5 +20,5 @@
 # admin.site.register(models.List, ListAdmin)
 # admin.site.register(models.Field, FieldAdmin)
 # admin.site.register(models.Subscribe, SubscribeAdmin)
-#admin.site.register(models.Subscribe)
-#admin.site.register(models.SubscribeTest)
+admin.site.register(models.Subscribe)
+admin.site.register(models.SubscribeTest)

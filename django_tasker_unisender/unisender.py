@@ -2,25 +2,6 @@ import os
 
 import requests
 from django.conf import settings
-from django.db import models
-
-
-class EmailModel(models.Model):
-    email = models.EmailField(max_length=255, null=True)
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if not self.pk or force_insert:
-            unisender = Unisender()
-            self.pk = unisender.subscribe(
-                list_ids=self.UnisenderMeta.list_id,
-                fields={'fields[email]': 'kostya@yandex.ru'},
-            )
-        super().save(force_insert, force_update, using, update_fields)
-
-    def delete(self, using=None, keep_parents=False):
-        unisender = Unisender()
-        unisender.exclude(contact_type="email", contact=self.email, list_ids=[self.UnisenderMeta.list_id])
-        super().delete(using, keep_parents)
 
 
 class Unisender:

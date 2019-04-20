@@ -57,6 +57,19 @@ Migrate your project
     python manage.py makemigrations
     python manage.py migrate
 
+Add to your ``admin.py``
+
+.. code-block:: python
+
+    from django.contrib import admin
+    from . import models
+
+    class SubscribeAdmin(admin.ModelAdmin):
+        list_display = ('email',)
+
+    admin.site.register(models.Subscribe)
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Modules:

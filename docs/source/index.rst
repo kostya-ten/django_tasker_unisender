@@ -50,6 +50,13 @@ Add to your ``models.py``
         class UnisenderMeta:
             list_id = 123456789 # Your list id contact on Unisender
 
+Migrate your project
+
+.. code-block:: shell
+
+    python manage.py makemigrations
+    python manage.py migrate
+
 .. toctree::
    :maxdepth: 2
    :caption: Modules:

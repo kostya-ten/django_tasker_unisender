@@ -39,6 +39,12 @@ To enable ``django_tasker_unisender`` in your project you need to add it to `INS
         # ...
     )
 
+Add to your ``settings.py``
+
+.. code-block:: python
+
+    UNISENDER_API_KEY="<< YOU API KEY>>"
+
 Add to your ``models.py``
 
 .. code-block:: python

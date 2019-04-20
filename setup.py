@@ -12,15 +12,15 @@ with io.open("README.rst", encoding="UTF-8") as readme:
     long_description = readme.read()
 
 setup(
-    name='django_tasker_unisender',
+    name='django-tasker-unisender',
     version='0.1',
     packages=[
         'tests',
         'django_tasker_unisender',
         'django_tasker_unisender.migrations',
-        'django_tasker_unisender.templates',
-        'django_tasker_unisender.templates.django_tasker_unisender',
-        'django_tasker_unisender.management.commands',
+        # 'django_tasker_unisender.templates',
+        # 'django_tasker_unisender.templates.django_tasker_unisender',
+        # 'django_tasker_unisender.management.commands',
     ],
     include_package_data=True,
     license='Apache License 2.0',

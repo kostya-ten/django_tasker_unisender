@@ -115,7 +115,7 @@ class Unisender:
         """
         self.get_request(method='deleteField', data={'id': field_id})
 
-    def get_fields(self):
+    def get_fields(self) -> list:
         """Array, each array element is an object with the id, name, type, is_visible and view_pos fields.
 
         """

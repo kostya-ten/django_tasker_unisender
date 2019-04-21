@@ -16,13 +16,41 @@ class EmailModel(models.Model):
 
         if getattr(self, 'UnisenderMeta') and getattr(self.UnisenderMeta, 'fields'):
             fields = dict(self.UnisenderMeta.fields)
-            for key, val in fields.items():
+            get_fields = unisender.get_fields()
+            #print(get_fields)
 
-                fields = unisender.get_fields()
-                print(fields)
+            #for item in self._meta.get_fields():
+            #    print(item.get_internal_type())
+
+            data = {}
+            for item in self._meta.fields:
+                val = item.deconstruct()[0]
+                typefield = item.deconstruct()[1]
+                if fields.get(val):
+                    if typefield == 'django.db.models.CharField':
+                        data[val] = {'type': 'string', 'public_name': fields.get(val)}
+                    elif typefield == 'django.db.models.BooleanField':
+                        data[val] = {'type': 'bool', 'public_name': fields.get(val)}
+                    elif typefield == 'django.db.models.TextField':
+                        data[val] = {'type': 'text', 'public_name': fields.get(val)}
+
+            print(data)
+
+                #print(key)
+
+                #is_found = False
+                # for item in get_fields:
+                #     if item.get('name') == key:
+                #         is_found = True
+                #
+                # if not is_found:
+                #     unisender.create_field(name=key, )
+                #     print('add key', key, val)
+
+
+
 
                 #field = unisender.create_field(name=key, public_name=val)
-                print(key, val)
 
         super().save(force_insert, force_update, using, update_fields)
 

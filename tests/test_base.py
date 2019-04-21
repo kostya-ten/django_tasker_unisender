@@ -10,4 +10,4 @@ class BaseTest(TestCase):
         from . import models
 
         for item in dir(models):
-            print(item.Subscribe.UnisenderMeta)
+            print(item)

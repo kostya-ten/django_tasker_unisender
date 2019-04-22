@@ -33,8 +33,22 @@ class EmailModel(models.Model):
                         data[val] = {'type': 'bool', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.TextField':
                         data[val] = {'type': 'text', 'public_name': fields.get(val)}
+                    elif typefield == 'django.db.models.IntegerField':
+                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                    elif typefield == 'django.db.models.PositiveIntegerField':
+                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                    elif typefield == 'django.db.models.PositiveSmallIntegerField':
+                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                    elif typefield == 'django.db.models.SmallIntegerField':
+                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                    elif typefield == 'django.db.models.BigIntegerField':
+                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                    elif typefield == 'django.db.models.DateField':
+                        data[val] = {'type': 'date', 'public_name': fields.get(val)}
 
-            print(data)
+            if data:
+                print(data)
+
 
                 #print(key)
 

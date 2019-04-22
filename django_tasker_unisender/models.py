@@ -16,7 +16,7 @@ class EmailModel(models.Model):
 
         if getattr(self, 'UnisenderMeta') and getattr(self.UnisenderMeta, 'fields'):
             get_fields = unisender.get_fields()
-            print(get_fields)
+            #print(get_fields)
 
             #for item in self._meta.get_fields():
             #    print(item.get_internal_type())
@@ -29,27 +29,40 @@ class EmailModel(models.Model):
                 typefield = item.deconstruct()[1]
                 if fields.get(val):
                     if typefield == 'django.db.models.CharField':
-                        data[val] = {'type': 'string', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'string', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.BooleanField':
-                        data[val] = {'type': 'bool', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'bool', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.TextField':
-                        data[val] = {'type': 'text', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'text', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.IntegerField':
-                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'number', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.PositiveIntegerField':
-                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'number', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.PositiveSmallIntegerField':
-                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'number', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.SmallIntegerField':
-                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'number', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.BigIntegerField':
-                        data[val] = {'type': 'number', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'number', 'public_name': fields.get(val)}
                     elif typefield == 'django.db.models.DateField':
-                        data[val] = {'type': 'date', 'public_name': fields.get(val)}
+                        data[val] = {'field_type': 'date', 'public_name': fields.get(val)}
 
             if data:
                 for item in get_fields:
+                    is_found = False
                     for key, val in data.items():
+                        if item.get('name') == key:
+                            is_found = True
+
+                        if val.get('public_name') == item.get('public_name'):
+                            is_found = True
+
+                    if not is_found:
+                        # unisender.create_field(
+                        #     name=key,
+                        #     public_name=val.get('public_name'),
+                        #     field_type=val.get('field_type')
+                        # )
                         print(key, val)
 
                 # for key in data.keys():

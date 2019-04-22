@@ -15,14 +15,15 @@ class EmailModel(models.Model):
             )
 
         if getattr(self, 'UnisenderMeta') and getattr(self.UnisenderMeta, 'fields'):
-            fields = dict(self.UnisenderMeta.fields)
-            get_fields = unisender.get_fields()
+            #get_fields = unisender.get_fields()
             #print(get_fields)
 
             #for item in self._meta.get_fields():
             #    print(item.get_internal_type())
 
             data = {}
+
+            fields = dict(self.UnisenderMeta.fields)
             for item in self._meta.fields:
                 val = item.deconstruct()[0]
                 typefield = item.deconstruct()[1]

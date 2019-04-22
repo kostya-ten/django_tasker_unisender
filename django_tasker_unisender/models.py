@@ -15,8 +15,8 @@ class EmailModel(models.Model):
             )
 
         if getattr(self, 'UnisenderMeta') and getattr(self.UnisenderMeta, 'fields'):
-            #get_fields = unisender.get_fields()
-            #print(get_fields)
+            get_fields = unisender.get_fields()
+            print(get_fields)
 
             #for item in self._meta.get_fields():
             #    print(item.get_internal_type())
@@ -48,7 +48,13 @@ class EmailModel(models.Model):
                         data[val] = {'type': 'date', 'public_name': fields.get(val)}
 
             if data:
-                print(data)
+                for item in get_fields:
+                    for key, val in data.items():
+                        print(key, val)
+
+                # for key in data.keys():
+                #     val = data.get(key)
+                #     print(key, val)
 
 
                 #print(key)

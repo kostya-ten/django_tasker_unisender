@@ -79,6 +79,21 @@ Add to your ``admin.py``
     admin.site.register(models.Subscribe, SubscribeAdmin)
 
 
+
+Add users automatically
+"""""""""""""""""""""""
+Automatically add users after registration
+
+To do this, specify in the settings ``settings.py``
+
+.. code-block:: python
+
+    UNISENDER_AUTO_LIST_ID="<< YOU API KEY>>"
+
+.. warning:
+   You must first create сontact lists
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Modules:

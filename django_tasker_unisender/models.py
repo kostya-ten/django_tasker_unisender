@@ -1,6 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from .unisender import Unisender
@@ -30,8 +31,24 @@ class EmailModel(models.Model):
         super().delete(using, keep_parents)
 
 
-
-# Signals
 @receiver(post_save, sender=User)
-def modelList(instance=None, **kwargs):
-    pass
+def unisenderuser_save(instance: User = None, **kwargs):
+    if settings.UNISENDER_AUTO_LIST_ID and instance.email:
+        fields = {
+            'fields[email]': instance.email,
+            'fields[last_name]': instance.last_name,
+            'fields[first_name]': instance.first_name
+        }
+
+        unisender = Unisender()
+        unisender.subscribe(
+            list_ids=settings.UNISENDER_AUTO_LIST_ID,
+            fields=fields,
+        )
+
+
+@receiver(post_delete, sender=User)
+def unisenderuser_delete(instance: User = None, **kwargs):
+    if settings.UNISENDER_AUTO_LIST_ID and instance.email:
+        unisender = Unisender()
+        unisender.exclude(contact_type="email", contact=instance.email, list_ids=[settings.UNISENDER_AUTO_LIST_ID])

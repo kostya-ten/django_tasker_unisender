@@ -51,6 +51,10 @@ class BaseTest(TestCase):
     def test_subscribe_exclude(self):
         random = urandom(2).hex()
         list_id = self.unisender.create_list(title="test_list_{random}".format(random=random))
-        self.unisender.subscribe(list_ids=[list_id], fields={'fields[email]': 'test@example.com'})
+        self.assertRegex(str(list_id), '^[0-9]+$')
+
+        person_id = self.unisender.subscribe(list_ids=[list_id], fields={'fields[email]': 'test@example.com'})
+        self.assertRegex(str(person_id), '^[0-9]+$')
 
         self.unisender.exclude(contact_type="email", contact='test@example.com', list_ids=[list_id])
+        self.unisender.delete_list(list_id=list_id)

@@ -163,3 +163,6 @@ class Unisender:
                 'list_ids': list_ids,
             }
         )
+
+
+    #def get_email(self):

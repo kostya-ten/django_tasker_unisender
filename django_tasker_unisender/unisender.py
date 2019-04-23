@@ -121,7 +121,7 @@ class Unisender:
         """
         return self.get_request(method='getFields')
 
-    def subscribe(self, list_ids: int, fields: dict, double_optin: int = 3, overwrite: int = 0) -> int:
+    def subscribe(self, list_ids: list, fields: dict, double_optin: int = 3, overwrite: int = 0) -> int:
         """This method adds contacts (email address and/or mobile phone numbers) of the contact to one or several lists,
             and also allows you to add/change values of additional fields and tags.
 
@@ -134,6 +134,9 @@ class Unisender:
                                   (the contact is identified by the email address and/or phone number).
             :return: Identifier person
         """
+        if list_ids:
+            list_ids = ",".join(map(str, list_ids))
+
         data = {'list_ids': list_ids, 'double_optin': double_optin, 'overwrite': overwrite}
         for key, value in fields.items():
             data[key] = value

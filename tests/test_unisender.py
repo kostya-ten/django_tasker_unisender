@@ -47,3 +47,10 @@ class BaseTest(TestCase):
             raise Exception('Not found test_field')
 
         self.unisender.delete_field(field_id=field_id)
+
+    def test_subscribe_exclude(self):
+        random = urandom(2).hex()
+        list_id = self.unisender.create_list(title="test_list_{random}".format(random=random))
+        self.unisender.subscribe(list_ids=[list_id], fields={'fields[email]': 'test@example.com'})
+
+        self.unisender.exclude(contact_type="email", contact='test@example.com', list_ids=[list_id])

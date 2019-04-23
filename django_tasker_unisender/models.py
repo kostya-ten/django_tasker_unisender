@@ -20,7 +20,7 @@ class EmailModel(models.Model):
                 fields['fields[{field}]'.format(field=field)] = getattr(self, field)
 
         self.pk = unisender.subscribe(
-            list_ids=self.UnisenderMeta.list_id,
+            list_ids=[self.UnisenderMeta.list_id],
             fields=fields,
         )
         super().save(force_insert, force_update, using, update_fields)
@@ -42,7 +42,7 @@ def unisenderuser_save(instance: User = None, **kwargs):
 
         unisender = Unisender()
         unisender.subscribe(
-            list_ids=settings.UNISENDER_AUTO_LIST_ID,
+            list_ids=[settings.UNISENDER_AUTO_LIST_ID],
             fields=fields,
         )
 

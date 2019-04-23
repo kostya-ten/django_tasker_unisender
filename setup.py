@@ -13,7 +13,7 @@ with io.open("README.rst", encoding="UTF-8") as readme:
 
 setup(
     name='django-tasker-unisender',
-    version='0.1',
+    version='0.0.1',
     packages=[
         'tests',
         'django_tasker_unisender',

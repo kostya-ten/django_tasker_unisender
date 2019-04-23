@@ -15,6 +15,11 @@ Welcome to Django Tasker Unisender's documentation!
      :target: https://requires.io/github/kostya-ten/django_tasker_unisender/requirements/?branch=master
      :alt: Requirements Status
 
+.. image:: https://badge.fury.io/py/django-tasker-unisender.svg
+    :target: https://badge.fury.io/py/django-tasker-unisender
+
+django-tasker-unisender
+
 Requirements
 """"""""""""""""""
 * Python 3.6+

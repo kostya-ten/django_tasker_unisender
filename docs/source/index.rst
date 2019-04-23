@@ -90,8 +90,7 @@ To do this, specify in the settings ``settings.py``
 
     UNISENDER_AUTO_LIST_ID="<< YOU API KEY>>"
 
-.. warning:
-   You must first create сontact lists
+.. attention:: You must first create сontact lists
 
 
 .. toctree::

@@ -88,7 +88,7 @@ To do this, specify in the settings ``settings.py``
 
 .. code-block:: python
 
-    UNISENDER_AUTO_LIST_ID="<< YOU API KEY>>"
+    UNISENDER_AUTO_LIST_ID="<< YOU LIST ID>>"
 
 .. attention:: You must first create сontact lists
 

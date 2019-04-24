@@ -56,5 +56,12 @@ class BaseTest(TestCase):
         person_id = self.unisender.subscribe(list_ids=[list_id], fields={'fields[email]': 'test@example.com'})
         self.assertRegex(str(person_id), '^[0-9]+$')
 
+        result = self.unisender.get_email(email='test@example.com')
+        self.assertEqual(result.get('email'), 'test@example.com')
+
         self.unisender.exclude(contact_type="email", contact='test@example.com', list_ids=[list_id])
         self.unisender.delete_list(list_id=list_id)
+
+    def test_export(self):
+        result = self.unisender.get_email(email='kostya@yandex.ru')
+        print(result)

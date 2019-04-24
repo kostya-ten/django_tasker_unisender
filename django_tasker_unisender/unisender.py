@@ -164,5 +164,28 @@ class Unisender:
             }
         )
 
+    def get_email(self, email: str) -> dict:
+        """The method get the contact’s email.
 
-    #def get_email(self):
+           :parameter email: Email address
+           :return: dictionary data
+        """
+        result = self.get_request(method='exportContacts', data={'limit': 1, 'email': email})
+
+        data = []
+        for item in result.get('data'):
+            count = 0
+            tmp = {}
+            for d in item:
+                if d:
+                    tmp[result.get('field_names')[count]] = d
+                else:
+                    tmp[result.get('field_names')[count]] = None
+                count = count + 1
+            data.append(tmp)
+
+        if data:
+            return data.pop()
+        else:
+            return {}
+

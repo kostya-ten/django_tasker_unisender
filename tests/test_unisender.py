@@ -62,6 +62,3 @@ class BaseTest(TestCase):
         self.unisender.exclude(contact_type="email", contact='test@example.com', list_ids=[list_id])
         self.unisender.delete_list(list_id=list_id)
 
-    def test_export(self):
-        result = self.unisender.get_email(email='kostya@yandex.ru')
-        print(result)

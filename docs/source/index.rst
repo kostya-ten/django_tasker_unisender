@@ -18,7 +18,6 @@ Welcome to Django Tasker Unisender's documentation!
 .. image:: https://badge.fury.io/py/django-tasker-unisender.svg
     :target: https://badge.fury.io/py/django-tasker-unisender
 
-django-tasker-unisender
 
 Requirements
 """"""""""""""""""
